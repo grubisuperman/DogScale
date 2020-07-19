@@ -184,7 +184,7 @@ void loop()
   {
     indicatorPosition = 11;
   }
-  char balance[11] = "          ";
+  char balance[12] = "           ";
   balance[indicatorPosition - 1] = 0x2B; //https://en.wikipedia.org/wiki/VT100_encoding
   memcpy(dispLineBuffer_LINE3 + 8, balance, 11);
   lcd.rowcol(3, 1);
