@@ -6,7 +6,7 @@
 #define WINDOW_SIZE 5
 
 // Display BV4618-h, I2C: 0x31
-const int LDC_I2C_ADDRESS = 0x31;
+const int LCD_I2C_ADDRESS = 0x31;
 char dispLineBuffer_LINE1[21] = "";
 char dispLineBuffer_LINE2[21] = "    --- TARA ---";
 char dispLineBuffer_LINE3[21] = "Balance[           ]";
@@ -23,7 +23,7 @@ const int LOADCELL_B_SCK_PIN = A0;
 const float LOADCELL_B_SCALE = 154000; // reading / LOADCELL_B_SCALE -> kg
 
 // HW objects
-BV4618_I lcd(LDC_I2C_ADDRESS);
+BV4618_I lcd(LCD_I2C_ADDRESS);
 
 HX711 scale_A;
 HX711 scale_B;
@@ -123,7 +123,7 @@ void setup()
   Serial.println("Config LCD");
   // config lcd to remove cursor
   Wire.begin();
-  Wire.beginTransmission(LDC_I2C_ADDRESS);
+  Wire.beginTransmission(LCD_I2C_ADDRESS);
   Wire.write(0x1b);
   Wire.write(0x01);
   Wire.write(0x0c);
