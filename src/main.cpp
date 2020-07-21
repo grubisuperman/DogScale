@@ -145,7 +145,7 @@ void setup()
   Serial.println("TARA HX711 scale_A");
   scale_A.tare();
 
-  while (!scale_A.is_ready())
+  while (!scale_B.is_ready())
   {
     Serial.println("Waiting for HX711 scale_B to become ready");
     delay(50);
