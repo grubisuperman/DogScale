@@ -166,42 +166,45 @@ void setup()
 
 void loop()
 {
+  static unsigned long lastExecution = 0;
 
-  updateScaleData(scaleData);
-
-  // disp weight
-  dtostrf(scaleData.weightSum_AB, 6, 2, weight);
-  memcpy(dispLineBuffer_LINE2 + 10, weight, 6);
-  lcd.rowcol(2, 1);
-  lcd.puts(dispLineBuffer_LINE2);
-
-  // disp balance
-  byte indicatorPosition = round( (INVERT_BALANCEINDICATOR ? (1 - scaleData.balance_AB):scaleData.balance_AB) * 11 + 0.5);
-  if (indicatorPosition < 1)
+  if(millis() >= (lastExecution + 100))
   {
-    indicatorPosition = 1;
-  }
-  if (indicatorPosition > 11)
-  {
-    indicatorPosition = 11;
-  }
-  char balance[12] = "           ";
-  balance[indicatorPosition - 1] = 0x2B; //https://en.wikipedia.org/wiki/VT100_encoding
-  memcpy(dispLineBuffer_LINE3 + 8, balance, 11);
-  lcd.rowcol(3, 1);
-  lcd.puts(dispLineBuffer_LINE3);
+    lastExecution = millis();
+    updateScaleData(scaleData);
 
-  // Serial output
-  Serial.print("HX711 reading A: ");
-  Serial.print(scaleData.A.values_average);
-  Serial.print("   reading B: ");
-  Serial.print(scaleData.B.values_average);
-  Serial.print("   Gewicht A&B: ");
-  Serial.print(scaleData.weightSum_AB);
-  Serial.print("   Balance A to B: ");
-  Serial.print(scaleData.balance_AB);
-  Serial.print("  indicatorPosition: ");
-  Serial.println(indicatorPosition);
+    // disp weight
+    dtostrf(scaleData.weightSum_AB, 6, 2, weight);
+    memcpy(dispLineBuffer_LINE2 + 10, weight, 6);
+    lcd.rowcol(2, 1);
+    lcd.puts(dispLineBuffer_LINE2);
 
-  delay(100);
+    // disp balance
+    byte indicatorPosition = round( (INVERT_BALANCEINDICATOR ? (1 - scaleData.balance_AB):scaleData.balance_AB) * 11 + 0.5);
+    if (indicatorPosition < 1)
+    {
+      indicatorPosition = 1;
+    }
+    if (indicatorPosition > 11)
+    {
+      indicatorPosition = 11;
+    }
+    char balance[12] = "           ";
+    balance[indicatorPosition - 1] = 0x2B; //https://en.wikipedia.org/wiki/VT100_encoding
+    memcpy(dispLineBuffer_LINE3 + 8, balance, 11);
+    lcd.rowcol(3, 1);
+    lcd.puts(dispLineBuffer_LINE3);
+
+    // Serial output
+    Serial.print("HX711 reading A: ");
+    Serial.print(scaleData.A.values_average);
+    Serial.print("   reading B: ");
+    Serial.print(scaleData.B.values_average);
+    Serial.print("   Gewicht A&B: ");
+    Serial.print(scaleData.weightSum_AB);
+    Serial.print("   Balance A to B: ");
+    Serial.print(scaleData.balance_AB);
+    Serial.print("  indicatorPosition: ");
+    Serial.println(indicatorPosition);
+  }
 }
