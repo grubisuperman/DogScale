@@ -3,7 +3,8 @@
 #include <bv4618_I.h>
 #include "HX711.h"
 
-#define WINDOW_SIZE 5
+#define WINDOW_SIZE 5               // averaged over number of WINDOW_SIZE values
+#define INVERT_BALANCEINDICATOR 0   // 0 - do not invert, weight on A -> indicator moves right, 1 -> indicator moves left
 
 // Display BV4618-h, I2C: 0x31
 const int LCD_I2C_ADDRESS = 0x31;
@@ -175,7 +176,7 @@ void loop()
   lcd.puts(dispLineBuffer_LINE2);
 
   // disp balance
-  byte indicatorPosition = round((1 - scaleData.balance_AB) * 11 + 0.5);
+  byte indicatorPosition = round( (INVERT_BALANCEINDICATOR ? (1 - scaleData.balance_AB):scaleData.balance_AB) * 11 + 0.5);
   if (indicatorPosition < 1)
   {
     indicatorPosition = 1;
